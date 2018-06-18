@@ -19,6 +19,7 @@ NewRelic platform. Currently supported backend systems are:
 - Redis
 - Riak
 - uWSGI
+- Varnishd
 
 Base Requirements
 -----------------
@@ -254,8 +255,12 @@ UWSGI Installation Notes
 ------------------------
 The UWSGI plugin can communicate either over UNIX domain sockets using the path configuration variable or TCP/IP using the host and port variables. Do not include both.
 
-Make sure you have `enabled stats server 
+Make sure you have `enabled stats server
 <http://uwsgi-docs.readthedocs.org/en/latest/StatsServer.html>`_ in your uwsgi config.
+
+Varnishd Installation Notes
+------------------------
+The Varnishd plugin uses the local ``varnishstat`` command to get information about your instance. Use the ``instance`` configuration variable to define your local varnish instance. The ``newrelic_instance`` can be used to set the NewRelic instance name, else the Varnish instance name is used. Your varnishstat command will be called from your system path, but can be overriden with ``varnishstat`` configuration variable.
 
 Configuration Example
 ---------------------
@@ -406,6 +411,11 @@ Configuration Example
           host: localhost
           port: 8098
           #verify_ssl_cert: true
+
+      varnishd:
+        instance: varnish1
+        newrelic_instance: my_varnish_server
+        varnishstat: /usr/local/bin/varnishstat
 
     Daemon:
       user: newrelic
